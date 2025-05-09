@@ -22,7 +22,6 @@ function App() {
   const [progress, setProgress] = useState(0);
   const [selectedTodoList, setSelectedTodoList] = useState(1);
   const [isCompleteItemsRunning, setIsCompleteItemsRunning] = useState(false);
-  const [reloadItems, setReloadItems] = useState(0);
 
   //Effect para cargar las listas para el DDL
   useEffect(() => {
@@ -31,13 +30,17 @@ function App() {
       .then((data) => setTodoList(data));
   }, []);
 
-  //Efecto actualiza los items cada vez que cambio la lista seleccionada o al cerrar el modal de completar
-  useEffect(() => {
+  const loadTodoItems = () => {
     fetch(`${API_URL}/todolists/${selectedTodoList}/todoitems`)
       .then((response) => response.json())
       .then((data) => setTodoItems(data))
       .catch((error) => console.error("Error al cargar los items:", error));
-  }, [selectedTodoList, reloadItems]);
+  };
+
+  //Efecto actualiza los items cada vez que cambio la lista seleccionada o al cerrar el modal de completar
+  useEffect(() => {
+    loadTodoItems();
+  }, [selectedTodoList]);
 
   const handleListChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedTodoList(Number(event.target.value));
@@ -91,7 +94,7 @@ function App() {
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
-    setReloadItems((prev) => prev + 1);
+    loadTodoItems();
   };
 
   return (
