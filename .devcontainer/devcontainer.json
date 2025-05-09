@@ -1,0 +1,22 @@
+{
+    "name": "dotnet-interview-frontend_devcontainer",
+    "dockerFile": "Dockerfile",
+    "forwardPorts": [3000, 5173],
+    "portsAttributes": {
+        "3000": {
+            "label": "React App",
+            "onAutoForward": "notify"
+        }
+    },
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "dbaeumer.vscode-eslint",
+                "esbenp.prettier-vscode",
+                "ms-vscode.vscode-typescript-next"
+            ]
+        }
+    },
+    "postCreateCommand": "npm install",
+    "remoteUser": "node"
+} 
